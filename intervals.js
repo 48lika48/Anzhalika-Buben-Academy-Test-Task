@@ -70,3 +70,62 @@ function intervalConstruction(arr) {
         return finalNote;
     }
 }
+
+function intervalIdentification(arr) {
+    let semitones = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', '6 semitones', 'G', 'F#/Gb', 'A', 'A#/Bb', 'B', 'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', '6 semitones', 'G', 'F#/Gb', 'A', 'A#/Bb', 'B'];
+    
+    if(arr.length === 2){
+        arr.push('asc');
+    }
+    if(arr.length < 2 || arr.length > 3){
+        return "Cannot identify the interval";
+    } else {
+        if(arr[2] === 'dsc'){
+            semitones = semitones.reverse();
+        } 
+        if (arr.length === 2 || arr.length === 3) {  
+            let firstSemitone = semitones.indexOf(arr[0].charAt(0));
+            let secondSemitone = semitones.indexOf(arr[1].charAt(0));
+            if(secondSemitone < firstSemitone){
+                secondSemitone = secondSemitone + semitones.length / 2;
+            } 
+            let receivedSemitone = secondSemitone - firstSemitone - 1;
+            let accidentalSemitone;
+
+            if(arr[0].length == 2){
+                accidentalSemitone = arr[0].charAt(1);
+                if(arr[2] === 'asc'){
+                    (accidentalSemitone === '#') ? receivedSemitone-- : receivedSemitone++;
+                } else {
+                    (accidentalSemitone === '#') ? receivedSemitone++ : receivedSemitone--;
+                }
+            }
+            if(arr[1].length == 2){
+                accidentalSemitone = arr[1].charAt(1);
+                if(arr[2] === 'asc'){
+                    (accidentalSemitone === '#') ? receivedSemitone++ : receivedSemitone--;
+                } else {
+                    (accidentalSemitone === '#') ? receivedSemitone-- : receivedSemitone++;
+                }
+            }
+            if(arr[0].length == 3){
+                accidentalSemitone = arr[0].charAt(1);
+                if(arr[2] === 'asc'){
+                    (accidentalSemitone === '#') ? receivedSemitone -= 2 : receivedSemitone += 2;
+                } else {
+                    (accidentalSemitone === '#') ? receivedSemitone += 2 : receivedSemitone -= 2;
+                }
+            }
+            if(arr[1].length == 3){
+                accidentalSemitone = arr[1].charAt(1);
+                if(arr[2] === 'asc'){
+                    (accidentalSemitone === '#') ? receivedSemitone += 2 : receivedSemitone -= 2;
+                } else {
+                    (accidentalSemitone === '#') ? receivedSemitone -= 2 : receivedSemitone += 2;
+                }
+            }
+            let intervalName = intervals[receivedSemitone];
+            return intervalName; 
+        } 
+    }
+}
